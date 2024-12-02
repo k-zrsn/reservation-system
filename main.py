@@ -3,3 +3,28 @@
 
 
 
+### Create classes
+
+# Table class
+class Table:
+    def __init__(self, table_number, capacity):
+        self.table_number = table_number
+        #self.capacity = capacity
+        self.is_available = True
+
+
+# Customer class
+class Customer:
+    def __init__(self, name, phone_number, email):
+        self.name = name
+        self.phone_number = phone_number
+        self.email = email
+
+
+# Reservation class
+class Reservation:
+    def __init__(self, customer, reservation_date,reservation_time, table):
+        self.customer = customer
+        self.reservation_date = reservation_date
+        self.reservation_time = reservation_time
+        self.table = table
