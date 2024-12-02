@@ -2,7 +2,6 @@
 
 
 
-
 ### Create classes
 
 # Table class
@@ -23,8 +22,24 @@ class Customer:
 
 # Reservation class
 class Reservation:
-    def __init__(self, customer, reservation_date,reservation_time, table):
+    def __init__(self, customer, reservation_type,reservation_date,reservation_time, table):
         self.customer = customer
+        self.reservation_type = reservation_type
         self.reservation_date = reservation_date
         self.reservation_time = reservation_time
         self.table = table
+
+
+
+### Run main program
+def main():
+    while True:
+        print("\n\n ---- Restaurant Reservation System ----\n")
+        print("1: View available tables")
+        print("2: View reservations")
+        print("3: Make a reservation")
+        print("4: Cancel a reservation")
+        print("5: Exit")
+
+
+main()
