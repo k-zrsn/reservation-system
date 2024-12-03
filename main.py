@@ -7,19 +7,19 @@ import time
 
 # Table class
 class Table:
-    def __init__(self, table_number, capacity):
+    def __init__(self, table_number):
         self.__table_number = table_number
-        self.__capacity = capacity
         self.__is_available = True
 
     @property
     def table_number(self):
         return self.__table_number
     
+    '''
     @property
     def capacity(self):
         return self.__capacity
-
+    '''
     def is_available(self):
         return self.__is_available
     
@@ -31,10 +31,10 @@ class Table:
     
     def __str__(self):
         status = "Available" if self.__is_available else "Reserved"
-        return f"Table {self.__table_number} (Capacity: {self.__capacity}) - {status}"
+        return f"Table {self.__table_number} - {status}"
 
 
-tables = [Table(i, 4) for i in range(1, 6)]
+tables = [Table(i) for i in range(1, 6)]
 
 
 # Customer class
@@ -54,7 +54,7 @@ class Reservation:
         self.reservation_time = reservation_time
         self.table = table
 
-reservations = []
+created_reservations = []
 
 
 
@@ -69,10 +69,14 @@ def avail_tables(tables):
 
 
 # View reservations
-def view_reservations():
+def view_reservations(reservations):
     if not reservations:
         print("\nNo reservations found.")
         return
+    else:
+        print("\n\nCurrent reservations:")
+        for reservation in reservations:
+            print(f"\nCustomer details: {reservation.customer.name} | {reservation.customer.phone_number} | {reservation.customer.email} \nReservation details: Table {reservation.table.table_number} | {reservation.reservation_type} | {reservation.reservation_date} | {reservation.reservation_time}\n\n")
 
 
 # Make reservation
@@ -97,15 +101,14 @@ def make_reservation(tables, reservations):
     if table and table.is_available:
         table.reserve_table()
         reservation = Reservation(customer, reservation_type, reservation_date, reservation_time, table)
-        reservations.append(reservation)
-        print("\nReservation created.")
-
+        created_reservations.append(reservation)
+        print("\n\nReservation created.")
     else:
         print("\nTable not available.")
 
 
 
-### Run main program
+### Main loop
 def main():
     while True:
         print("\n\n\n ---- Restaurant Reservation System ---- \n")
@@ -122,13 +125,17 @@ def main():
             time.sleep(1.5)
         
         elif choice == "2":
-            view_reservations()
+            view_reservations(created_reservations)
             time.sleep(1.5)
 
         elif choice == "3":
             make_reservation(tables, [])
             time.sleep(1.5)
 
+        else:
+            break
 
 
+
+### Run program
 main()
