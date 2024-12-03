@@ -54,6 +54,8 @@ class Reservation:
         self.reservation_time = reservation_time
         self.table = table
 
+reservations = []
+
 
 
 ### Create functions
@@ -65,6 +67,41 @@ def avail_tables(tables):
         if table.is_available:
             print(f"Table {table.table_number}")
 
+
+# View reservations
+def view_reservations():
+    if not reservations:
+        print("\nNo reservations found.")
+        return
+
+
+# Make reservation
+def make_reservation(tables, reservations):
+    print("\n\nCreating reservation...\n")
+
+    # Get customer details
+    name = input("Enter customer name: ")
+    phone_number = input("Enter customer phone number: ")
+    email = input("Enter customer email address: ")
+    customer = Customer(name, phone_number, email)
+
+    # Get reservation details
+    reservation_type = input("Enter reservation type: (walk in or advance)").lower()
+    reservation_date = input("Enter reservation date (YYYY-MM-DD): ")
+    reservation_time = input("Enter reservation time (HH:MM): ")
+
+    avail_tables(tables)
+    table_number = int(input("\nEnter table number: "))
+    table = next((table for table in tables if table.table_number == table_number and table.is_available), None)
+
+    if table and table.is_available:
+        table.reserve_table()
+        reservation = Reservation(customer, reservation_type, reservation_date, reservation_time, table)
+        reservations.append(reservation)
+        print("\nReservation created.")
+
+    else:
+        print("\nTable not available.")
 
 
 
@@ -82,6 +119,14 @@ def main():
 
         if choice == "1":
             avail_tables(tables)
+            time.sleep(1.5)
+        
+        elif choice == "2":
+            view_reservations()
+            time.sleep(1.5)
+
+        elif choice == "3":
+            make_reservation(tables, [])
             time.sleep(1.5)
 
 
