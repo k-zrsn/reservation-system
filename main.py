@@ -15,11 +15,6 @@ class Table:
     def table_number(self):
         return self.__table_number
     
-    '''
-    @property
-    def capacity(self):
-        return self.__capacity
-    '''
     def is_available(self):
         return self.__is_available
     
@@ -64,7 +59,7 @@ created_reservations = []
 def avail_tables(tables):
     print("\nAvailable tables:")
     for table in tables:
-        if table.is_available:
+        if table.is_available():
             print(f"Table {table.table_number}")
 
 
