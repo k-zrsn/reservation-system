@@ -1,6 +1,15 @@
 ### Restaurant Reservation System
+### A reservation system for a restaurant that manages tables, reservations, and customers
+
+
 
 import time
+
+
+
+tables = [Table(i) for i in range(1, 6)]
+created_reservations = []
+
 
 
 ### Create classes
@@ -29,7 +38,6 @@ class Table:
         return f"Table {self.__table_number} - {status}"
 
 
-tables = [Table(i) for i in range(1, 6)]
 
 
 # Customer class
@@ -49,8 +57,6 @@ class Reservation:
         self.reservation_time = reservation_time
         self.table = table
 
-created_reservations = []
-
 
 
 ### Create functions
@@ -58,6 +64,8 @@ created_reservations = []
 # View available tables
 def avail_tables(tables):
     print("\nAvailable tables:")
+    
+    # Print available tables
     for table in tables:
         if table.is_available():
             print(f"Table {table.table_number}")
@@ -68,6 +76,8 @@ def view_reservations(reservations):
     if not reservations:
         print("\nNo reservations found.")
         return
+    
+    # Print all reservation details 
     else:
         print("\n\nCurrent reservations:")
         for reservation in reservations:
@@ -89,10 +99,12 @@ def make_reservation(tables, reservations):
     reservation_date = input("Enter reservation date (YYYY-MM-DD): ")
     reservation_time = input("Enter reservation time (HH:MM): ")
 
+    # List available tables
     avail_tables(tables)
     table_number = int(input("\nEnter table number: "))
     table = next((table for table in tables if table.table_number == table_number and table.is_available), None)
 
+    # Reserve selected table
     if table and table.is_available:
         table.reserve_table()
         reservation = Reservation(customer, reservation_type, reservation_date, reservation_time, table)
