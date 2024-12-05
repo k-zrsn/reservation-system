@@ -55,7 +55,26 @@ class Reservation:
         self.reservation_time = reservation_time
         self.table = table
 
+    def priority_seating(self):
+        return "Normal Seating"
+
 created_reservations = []
+
+# Walk in reservation subclass
+class WalkInReservation(Reservation):
+    def __init__(self, customer, reservation_type, reservation_date, reservation_time, table):
+        super().__init__(customer, reservation_type, reservation_date, reservation_time, table)
+
+
+# Advance Reservation subclass
+class AdvanceReservation(Reservation):
+    def __init__(self, customer, reservation_type, reservation_date, reservation_time, table):
+        super().__init__(customer, reservation_type, reservation_date, reservation_time, table)
+
+    # Return High Priority for Advance Reservations
+    def priority_seating(self):
+        return "High Priority Seating"
+
 
 
 ### Create functions
@@ -83,6 +102,14 @@ def view_reservations(reservations):
             print(f"\nCustomer details: {reservation.customer.name} | {reservation.customer.phone_number} | {reservation.customer.email} \nReservation details: Table {reservation.table.table_number} | {reservation.reservation_type} | {reservation.reservation_date} | {reservation.reservation_time}\n\n")
 
 
+# Determine priority of a reservation
+def handle_seating(reservation):
+    if reservation.priority_seating() == "High Priority Seating":
+        print("\nAdvanced Reservation: High Priority Seating")
+    else:
+        print("\nWalk in Reservation: Normal Seating")
+
+
 # Make a reservation
 def make_reservation(tables, reservations):
     print("\n\nCreating reservation...\n")
@@ -94,7 +121,7 @@ def make_reservation(tables, reservations):
     customer = Customer(name, phone_number, email)
 
     # Get reservation details
-    reservation_type = input("Enter reservation type: (walk in or advance)").upper()
+    reservation_type = input("Enter reservation type: (walk in or advance) ").upper()
     reservation_date = input("Enter reservation date (YYYY-MM-DD): ")
     reservation_time = input("Enter reservation time (HH:MM): ")
 
@@ -106,9 +133,18 @@ def make_reservation(tables, reservations):
     # Reserve selected table
     if table and table.is_available:
         table.reserve_table()
-        reservation = Reservation(customer, reservation_type, reservation_date, reservation_time, table)
+
+        # Handle seating based on priority
+        if reservation_type == "WALK IN":
+            reservation = WalkInReservation(customer, reservation_type, reservation_date, reservation_time, table)
+
+        else:
+            reservation = AdvanceReservation(customer, reservation_type, reservation_date, reservation_time, table)
+        
         created_reservations.append(reservation)
         print("\n\nReservation created.")
+        handle_seating(reservation) 
+        
     else:
         print("\nTable not available.")
 
@@ -121,7 +157,7 @@ def cancel_reservation(name, reservation_date):
         if reservation.customer.name == name and reservation.reservation_date == reservation_date:
             reservation.table.release_table()
             created_reservations.remove(reservation)
-            print("\n\nReservation cancelled.")
+            print("\n\nReservation canceled.")
             return
 
 
@@ -144,11 +180,11 @@ def main():
         
         elif choice == "2":
             view_reservations(created_reservations)
-            time.sleep(1.5)
+            time.sleep(2.5)
 
         elif choice == "3":
             make_reservation(tables, [])
-            time.sleep(1.5)
+            time.sleep(2.5)
 
         elif choice == "4":
             name = input("Enter customer name: ").upper()
