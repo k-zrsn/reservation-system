@@ -1,14 +1,9 @@
-### Restaurant Reservation System
+### Virgil Padua - Restaurant Reservation System
 ### A reservation system for a restaurant that manages tables, reservations, and customers
 
 
 
 import time
-
-
-
-tables = [Table(i) for i in range(1, 6)]
-created_reservations = []
 
 
 
@@ -33,11 +28,14 @@ class Table:
             return True
         return False
     
+    def release_table(self):
+        self.__is_available = True
+    
     def __str__(self):
         status = "Available" if self.__is_available else "Reserved"
         return f"Table {self.__table_number} - {status}"
 
-
+tables = [Table(i) for i in range(1, 6)]
 
 
 # Customer class
@@ -57,6 +55,7 @@ class Reservation:
         self.reservation_time = reservation_time
         self.table = table
 
+created_reservations = []
 
 
 ### Create functions
@@ -84,18 +83,18 @@ def view_reservations(reservations):
             print(f"\nCustomer details: {reservation.customer.name} | {reservation.customer.phone_number} | {reservation.customer.email} \nReservation details: Table {reservation.table.table_number} | {reservation.reservation_type} | {reservation.reservation_date} | {reservation.reservation_time}\n\n")
 
 
-# Make reservation
+# Make a reservation
 def make_reservation(tables, reservations):
     print("\n\nCreating reservation...\n")
 
     # Get customer details
-    name = input("Enter customer name: ")
+    name = input("Enter customer name: ").upper()
     phone_number = input("Enter customer phone number: ")
-    email = input("Enter customer email address: ")
+    email = input("Enter customer email address: ").lower()
     customer = Customer(name, phone_number, email)
 
     # Get reservation details
-    reservation_type = input("Enter reservation type: (walk in or advance)").lower()
+    reservation_type = input("Enter reservation type: (walk in or advance)").upper()
     reservation_date = input("Enter reservation date (YYYY-MM-DD): ")
     reservation_time = input("Enter reservation time (HH:MM): ")
 
@@ -112,6 +111,18 @@ def make_reservation(tables, reservations):
         print("\n\nReservation created.")
     else:
         print("\nTable not available.")
+
+
+# Cancel a reservation
+def cancel_reservation(name, reservation_date):
+    for reservation in created_reservations:
+        
+        # Find matches 
+        if reservation.customer.name == name and reservation.reservation_date == reservation_date:
+            reservation.table.release_table()
+            created_reservations.remove(reservation)
+            print("\n\nReservation cancelled.")
+            return
 
 
 
@@ -137,6 +148,12 @@ def main():
 
         elif choice == "3":
             make_reservation(tables, [])
+            time.sleep(1.5)
+
+        elif choice == "4":
+            name = input("Enter customer name: ").upper()
+            reservation_date = input("Enter reservation date (YYYY-MM-DD): ")
+            cancel_reservation(name, reservation_date)
             time.sleep(1.5)
 
         else:
