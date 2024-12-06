@@ -81,6 +81,10 @@ class AdvanceReservation(Reservation):
 
 # View available tables
 def avail_tables(tables):
+    """
+    Docstring:
+    A function that returns a list of available tables
+    """
     print("\nAvailable tables:")
     
     # Print available tables
@@ -91,6 +95,10 @@ def avail_tables(tables):
 
 # View reservations
 def view_reservations(reservations):
+    """
+    Docstring:
+    A function that returns a list of all reservations made by the restaurant
+    """
     if not reservations:
         print("\nNo reservations found.")
         return
@@ -104,6 +112,10 @@ def view_reservations(reservations):
 
 # Determine priority of a reservation
 def handle_seating(reservation):
+    """
+    Docstring:
+    A function that handles seating prioritization based on the type of reservation
+    """
     if reservation.priority_seating() == "High Priority Seating":
         print("\nAdvanced Reservation: High Priority Seating")
     else:
@@ -112,6 +124,10 @@ def handle_seating(reservation):
 
 # Make a reservation
 def make_reservation(tables, reservations):
+    """
+    Docstring:
+    A function that creates a reservation based on the provided details
+    """
     print("\n\nCreating reservation...\n")
 
     # Get customer details
@@ -151,9 +167,13 @@ def make_reservation(tables, reservations):
 
 # Cancel a reservation
 def cancel_reservation(name, reservation_date):
+    """
+    Docstring:
+    A function that cancels a reservation based on the provided details
+    """
     for reservation in created_reservations:
         
-        # Find matches 
+        # Search reservations for matching reservation 
         if reservation.customer.name == name and reservation.reservation_date == reservation_date:
             reservation.table.release_table()
             created_reservations.remove(reservation)
